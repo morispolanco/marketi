@@ -15,7 +15,15 @@ def call_openrouter_api(prompt):
         "messages": [{"role": "user", "content": prompt}]
     }
     response = requests.post(url, headers=headers, data=json.dumps(data))
-    return response.json()["choices"][0]["message"]["content"]
+    
+    if response.status_code == 200:
+        try:
+            response_json = response.json()
+            return response_json.get("choices", [{}])[0].get("message", {}).get("content", "Error: No se recibió contenido válido.")
+        except json.JSONDecodeError:
+            return "Error: La respuesta de la API no es un JSON válido."
+    else:
+        return f"Error en la API: {response.status_code} - {response.text}"
 
 st.set_page_config(page_title="Herramientas de Mercadeo", layout="wide")
 st.sidebar.title("Menú de Herramientas de Mercadeo")

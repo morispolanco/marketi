@@ -11,7 +11,7 @@ def call_kluster_api(prompt):
         "Content-Type": "application/json"
     }
     data = {
-        "model": "klusterai/Meta-Llama-3.3-70B-Instruct-Turbo",
+        "model": "deepseek-ai/DeepSeek-R1",
         "max_completion_tokens": 2000,
         "temperature": 0.6,
         "top_p": 1,
@@ -22,6 +22,10 @@ def call_kluster_api(prompt):
 
 st.set_page_config(page_title="Herramientas de Mercadeo", layout="wide")
 st.sidebar.title("Menú de Herramientas de Mercadeo")
+
+# Sección para que el usuario describa su negocio
+st.sidebar.subheader("Describe tu negocio")
+business_description = st.sidebar.text_area("Ingresa una breve descripción de tu negocio")
 
 # Lista de herramientas disponibles
 herramientas = {
@@ -40,6 +44,16 @@ herramientas = {
     "13. Estrategia de Branding": "Desarrolla una identidad de marca sólida.",
     "14. Funnel de Ventas": "Diseña un embudo de ventas optimizado.",
     "15. Estrategia de Contenidos": "Planifica contenidos para atraer a tu audiencia.",
+    "16. Influencer Marketing": "Aprovecha el poder de los influencers en tu estrategia.",
+    "17. Growth Hacking": "Implementa técnicas creativas para acelerar el crecimiento.",
+    "18. Marketing Automation": "Automatiza tus procesos de mercadeo para mayor eficiencia.",
+    "19. Experiencia del Cliente": "Mejora la experiencia del usuario con tu marca.",
+    "20. Neuromarketing": "Aplica principios de psicología en tu estrategia de ventas.",
+    "21. Storytelling": "Aprende a contar historias que conecten con tu audiencia.",
+    "22. Análisis de Competencia": "Obtén información valiosa sobre tus competidores.",
+    "23. Retención de Clientes": "Crea estrategias para fidelizar a tus clientes.",
+    "24. Campañas de Remarketing": "Convierte visitantes en clientes con estrategias de remarketing.",
+    "25. Marketing de Afiliación": "Explora oportunidades de afiliación para potenciar tus ventas."
 }
 
 # Mostrar herramientas en la barra lateral
@@ -48,7 +62,8 @@ st.sidebar.write("**Descripción:**", herramientas[seleccion])
 
 if st.sidebar.button("Ejecutar Herramienta"):
     with st.spinner("Procesando..."):
-        resultado = call_kluster_api(f"Genera un análisis sobre {seleccion}")
+        prompt = f"Genera un análisis sobre {seleccion}. Mi negocio es: {business_description}" if business_description else f"Genera un análisis sobre {seleccion}"
+        resultado = call_kluster_api(prompt)
         st.subheader(seleccion)
         st.write(resultado)
 

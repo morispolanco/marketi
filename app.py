@@ -3,16 +3,24 @@ import requests
 import json
 import os
 
-def call_openrouter_api(prompt):
-    api_key = st.secrets["OPENROUTER_API_KEY"]
-    url = "https://openrouter.ai/api/v1/chat/completions"
+def call_together_api(prompt):
+    api_key = st.secrets["TOGETHER_API_KEY"]
+    url = "https://api.together.xyz/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
     }
     data = {
-        "model": "deepseek/deepseek-r1-distill-llama-70b:free",
-        "messages": [{"role": "user", "content": prompt}]
+        "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free",
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": None,
+        "temperature": 0.7,
+        "top_p": 0.7,
+        "top_k": 50,
+        "repetition_penalty": 1,
+        "stop": ["<|end▁of▁sentence|>"],
+        "utm_source": "email",
+        "stream": False
     }
     response = requests.post(url, headers=headers, data=json.dumps(data))
     
@@ -68,9 +76,9 @@ st.sidebar.write("**Descripción:**", herramientas[seleccion])
 if st.sidebar.button("Ejecutar Herramienta"):
     with st.spinner("Procesando..."):
         prompt = f"Genera un análisis sobre {seleccion}. Mi negocio es: {business_description}" if business_description else f"Genera un análisis sobre {seleccion}"
-        resultado = call_openrouter_api(prompt)
+        resultado = call_together_api(prompt)
         st.subheader(seleccion)
         st.write(resultado)
 
 st.sidebar.markdown("---")
-st.sidebar.info("Desarrollado con OpenRouter y Streamlit.")
+st.sidebar.info("Desarrollado con Together AI y Streamlit.")

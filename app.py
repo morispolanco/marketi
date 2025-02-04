@@ -3,18 +3,15 @@ import requests
 import json
 import os
 
-def call_kluster_api(prompt):
-    api_key = st.secrets["KLUSTER_API_KEY"]
-    url = "https://api.kluster.ai/v1/chat/completions"
+def call_openrouter_api(prompt):
+    api_key = st.secrets["OPENROUTER_API_KEY"]
+    url = "https://openrouter.ai/api/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
     }
     data = {
-        "model": "deepseek-ai/DeepSeek-R1",
-        "max_completion_tokens": 2000,
-        "temperature": 0.6,
-        "top_p": 1,
+        "model": "deepseek/deepseek-r1-distill-llama-70b:free",
         "messages": [{"role": "user", "content": prompt}]
     }
     response = requests.post(url, headers=headers, data=json.dumps(data))
@@ -63,9 +60,9 @@ st.sidebar.write("**Descripción:**", herramientas[seleccion])
 if st.sidebar.button("Ejecutar Herramienta"):
     with st.spinner("Procesando..."):
         prompt = f"Genera un análisis sobre {seleccion}. Mi negocio es: {business_description}" if business_description else f"Genera un análisis sobre {seleccion}"
-        resultado = call_kluster_api(prompt)
+        resultado = call_openrouter_api(prompt)
         st.subheader(seleccion)
         st.write(resultado)
 
 st.sidebar.markdown("---")
-st.sidebar.info("Desarrollado con Kluster AI y Streamlit.")
+st.sidebar.info("Desarrollado con OpenRouter y Streamlit.")

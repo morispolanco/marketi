@@ -65,7 +65,7 @@ herramientas = {
 }
 
 # Mostrar herramientas en la barra lateral
-seleccion = st.sidebar.radio("Selecciona una herramienta", list(herramientas.keys()))
+seleccion = st.sidebar.selectbox("Selecciona una herramienta", list(herramientas.keys()))
 st.sidebar.write("**Descripción:**", herramientas[seleccion])
 
 if st.sidebar.button("Ejecutar Herramienta"):
@@ -76,4 +76,4 @@ if st.sidebar.button("Ejecutar Herramienta"):
         st.write(resultado)
 
 st.sidebar.markdown("---")
-st.sidebar.info("Desarrollado con Kluster AI y Streamlit.")
+st.sidebar.markdown("[Corrección de textos en 24 horas](https://hablemosbien.org)")
